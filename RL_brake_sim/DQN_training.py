@@ -199,7 +199,7 @@ class DQN_training:
 		
 		# Storing and compute training results		
 		#print('# of episode: {} {:0.2f} {:0.2f} {:0.2f} {:0.2f}'.format(i_episode+1, max(self.episode_reward)[0],min(self.loss_fn),max(self.episode_reward)[0],min(self.loss_fn)))
-		#ec_100 = self.end_condition#[-100:]
+		ec_100 = self.end_condition#[-100:]
 		print('Average ending condition :',np.sum([ec == 0 for ec in ec_100])/len(self.end_condition),'%, ',np.sum([ec == 1 for ec in ec_100])/len(self.end_condition),'%, ',np.sum([ec == 2 for ec in ec_100])/len(self.end_condition),'%')
 		print('Average final dist: {:0.2f}'.format(np.mean([abs(cd - 1)*d for d, cd in zip(self.dist,self.end_condition)])))
 		print(' ')
