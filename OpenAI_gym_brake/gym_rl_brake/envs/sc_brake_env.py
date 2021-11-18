@@ -333,9 +333,7 @@ class SCADASEnv(gym.Env, EzPickle):
             decel_reward = -1.0* decel_v * (dist **3.0) * alph*0.2
             passing_reward = 1.5 * math.exp(-cosineangle)
             stop_reward = -1.0* decel_v * (- 1.0* (self.car.vel_ini**2.0/(2.0*5.9))**3.5/(dist/(6.0)+0.001)**1.0 ) * alph
-            bump_reward = -30.0 * \
-                math.exp(10*(cosineangle-0.7)+0.1*(1.8-dist)) * \
-                (EPSILON * veh_vel ** 2.0)
+            bump_reward = 0.0
 
             self.reward += decel_reward +stop_reward+passing_reward
             self.decel_reward_acc += decel_reward
