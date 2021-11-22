@@ -76,7 +76,7 @@ class DQN_training:
 		self.best_state_buffer = []
 		self.result = []
 
-	def select_action(self):
+	def select_action(self, state):
 		"""
 		Selecting an action based on Epsilon-Greedy algorithm
 
