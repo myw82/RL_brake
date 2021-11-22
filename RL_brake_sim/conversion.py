@@ -4,21 +4,11 @@ import numpy as np
 import torch
 from .DQN import DQN
 
-#from .cnn import Net
-
 
 class Converter:
     """
     Conversion functions
-    Note: Singleton Pattern
     """
-    _singleton_cvtr = None
-
-    @classmethod
-    def cvtr(cls):
-        if not cls._singleton_cvtr:
-            cls._singleton_cvtr = cls()
-        return cls._singleton_cvtr
 
     def __init__(self):
         # This list saves the order of models (using the predefined model names)
@@ -71,8 +61,8 @@ class Converter:
     def get_model_names(self, net) -> List[str]:
         """
         Return a list of suggested model names for the config file
-        :param net:
-        :return:
+        :param net: NN model
+        :return: a list of names of each layers
         """
         print('=== Model Names (for the config file) ===')
         d = self.convert_nn_to_dict_nparray(net)
@@ -92,3 +82,4 @@ def _order_dict(d: Dict, l: List) -> List:
     for key in l:
         ordered_vals.append(d[key])
     return ordered_vals
+
