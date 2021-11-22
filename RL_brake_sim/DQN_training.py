@@ -23,6 +23,9 @@ Transition = namedtuple('Transition',
 				('state', 'action', 'next_state', 'reward')) 
 
 class DQN_training:
+	"""
+	Process for performing the DQN training, including model parameter and optimizer settings
+	"""
 	def __init__(self, sg_models, env, BATCH_SIZE_REPLAY = 80, GAMMA = 0.999, EPS_START = 0.8, EPS_END = 0.2, EPS_DECAY = 50, TARGET_UPDATE = 20,
 		ReplayMemory_Size = 10000, TraumaMemory_Size = 1000, lr = 0.00005): #lr = 0.00002
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
@@ -73,7 +76,12 @@ class DQN_training:
 		self.best_state_buffer = []
 		self.result = []
 
-	def select_action(self, state):
+	def select_action(self):
+		"""
+		Selecting an action based on Epsilon-Greedy algorithm
+
+		:return: tensor - selected action
+		"""
 		#global steps_done
 		n_actions = self.env.action_space.n
 		sample = random.random()
@@ -88,6 +96,11 @@ class DQN_training:
  
 	
 	def optimize_model(self):
+		"""
+		Compute the loss for the batched state-action values
+
+		:return: tensor - loss
+		"""	
 		if len(self.memory) < self.BATCH_SIZE_REPLAY:
 			return
 		transitions = self.memory.sample(self.BATCH_SIZE_REPLAY)
@@ -130,14 +143,9 @@ class DQN_training:
 	def execute_training(self, n_iter):
 		"""
 		Training routine
-		:param policy_net: DQN policy net
-		:param target_net: DQN target net
-		:param memory:
-		:param memory_trauma:
-		:param criterion:
-		:param optimizer:
-		:param n_iter:
-		:return:
+		:param n_iter: int, number of training iteration
+		:return: tensor -> trained policy net
+				 Dict[str,np.array] -> storing performance information
 		"""
 		highest_reward = -50000.0 # some random low number
 
@@ -198,8 +206,7 @@ class DQN_training:
 				best_final_dist = info['dist']
 		
 		# Storing and compute training results		
-		#print('# of episode: {} {:0.2f} {:0.2f} {:0.2f} {:0.2f}'.format(i_episode+1, max(self.episode_reward)[0],min(self.loss_fn),max(self.episode_reward)[0],min(self.loss_fn)))
-		ec_100 = self.end_condition#[-100:]
+		ec_100 = self.end_condition
 		print('Average ending condition :',np.sum([ec == 0 for ec in ec_100])/len(self.end_condition),'%, ',np.sum([ec == 1 for ec in ec_100])/len(self.end_condition),'%, ',np.sum([ec == 2 for ec in ec_100])/len(self.end_condition),'%')
 		print('Average final dist: {:0.2f}'.format(np.mean([abs(cd - 1)*d for d, cd in zip(self.dist,self.end_condition)])))
 		print(' ')
