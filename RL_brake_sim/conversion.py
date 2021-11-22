@@ -9,6 +9,13 @@ class Converter:
     """
     Conversion functions
     """
+    _singleton_cvtr = None
+
+    @classmethod
+    def cvtr(cls):
+        if not cls._singleton_cvtr:
+            cls._singleton_cvtr = cls()
+        return cls._singleton_cvtr
 
     def __init__(self):
         # This list saves the order of models (using the predefined model names)
